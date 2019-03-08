@@ -3,7 +3,7 @@ CFLAGS = -Wall -fPIC -g
 
 LDFLAGS = -L.
 
-all: tema1
+build: tema1
 
 tema1: source.c
 	$(CC) $(CFLAGS) -o $@ $< -lcompare -lso $(LDFLAGS)

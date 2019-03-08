@@ -35,6 +35,7 @@ struct priorityQueue *insert(struct priorityQueue *queue,
 {
 	struct priorityQueue *toAdd =
 		(struct priorityQueue *) malloc(sizeof(struct priorityQueue));
+	struct priorityQueue *aux = NULL;
 
 	if (toAdd == NULL) {
 		free(toAdd);
@@ -56,7 +57,8 @@ struct priorityQueue *insert(struct priorityQueue *queue,
 		queue = toAdd;
 		return queue;
 	}
-	struct priorityQueue *aux = queue;
+
+	aux = queue;
 
 	while (aux->next != NULL
 			&& compare(toAdd->priority, aux->next->priority) < 0) {
@@ -122,9 +124,10 @@ int size(struct priorityQueue *queue)
  */
 void free_queue(struct priorityQueue *queue)
 {
+	struct priorityQueue *node = NULL;
 	while (queue != NULL) {
 		free(queue->value);
-		struct priorityQueue *node = queue;
+		node = queue;
 
 		queue = queue->next;
 		free(node);
@@ -135,13 +138,17 @@ int main(int argc, char **argv)
 {
 	struct priorityQueue *queue = NULL;
 	char *command = (char *) malloc(MAXSIZE * sizeof(char));
+	char *name = NULL, *priority_string = NULL;
+	int priority = 0;
 
 	if (command == NULL) {
 		free(command);
 		exit(ENOMEM);
 	}
 	if (argc > 1) {
-		for (int i = 1; i < argc; ++i) {
+		int i;
+
+		for (i = 1; i < argc; ++i) {
 			FILE *file = fopen(argv[i], "r");
 
 			if (file == NULL)
@@ -150,16 +157,16 @@ int main(int argc, char **argv)
 				command[strlen(command) - 1] = '\0';
 				if (strncmp(command, INSERT, 6) == 0) {
 					strtok(command, " ");
-					char *name = strtok(NULL, " ");
+					name = strtok(NULL, " ");
 
-					char *priority_string
+					priority_string
 							= strtok(NULL, " ");
 
 					if (priority_string == NULL)
 						continue;
 					if (strtok(NULL, " ") != NULL)
 						continue;
-					int priority = atoi(priority_string);
+					priority = atoi(priority_string);
 
 					queue = insert(queue, name, priority);
 				} else if (strcmp(command, TOP) == 0) {
@@ -177,16 +184,16 @@ int main(int argc, char **argv)
 			command[strlen(command) - 1] = '\0';
 				if (strncmp(command, INSERT, 6) == 0) {
 					strtok(command, " ");
-					char *name = strtok(NULL, " ");
+					name = strtok(NULL, " ");
 
-					char *priority_string
+					priority_string
 							= strtok(NULL, " ");
 
 					if (priority_string == NULL)
 						continue;
 					if (strtok(NULL, " ") != NULL)
 						continue;
-					int priority = atoi(priority_string);
+					priority = atoi(priority_string);
 
 					queue = insert(queue, name, priority);
 				} else if (strcmp(command, TOP) == 0) {

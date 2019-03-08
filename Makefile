@@ -1,12 +1,10 @@
-CC = gcc
-CFLAGS = -Wall -fPIC -g
+build: tema1
 
-LDFLAGS = -L.
+tema1: tema1.obj
+	link /nologo /out:tema1 compare.lib tema1.obj
 
-all: tema1
+tema1.obj: source.c
+	cl /c /MD source.c /Fotema1.obj
 
-tema1: source.c
-	$(CC) $(CFLAGS) -o $@ $< -lcompare -lso $(LDFLAGS)
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
 clean:
-	rm -f *.o  tema1
+	del tema1 *.obj
